@@ -21,11 +21,17 @@ public class MainController {
 //    {
 //        return "redirect:/new_mainMenu";
 //    }
-    @GetMapping("/new_mainMenu")
+//    @GetMapping("/new_mainMenu")
+//    public String mainMenuPage(Model model) {
+//        System.out.println("Helo world new project");
+//        System.out.println("привет как дела?7/10");
+//        return "new_mainMenu";
+//    }
+
+    @GetMapping("/mainMenu")
     public String mainMenuPage(Model model) {
         System.out.println("Helo world new project");
         System.out.println("привет как дела?7/10");
-        return "new_mainMenu";
+        return "/mainMenu";
     }
-
 }
