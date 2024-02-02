@@ -34,4 +34,50 @@ public class MainController {
         System.out.println("привет как дела?7/10");
         return "/mainMenu";
     }
+
+    @GetMapping("/UpravleniePredpriyatiem")
+    public String UpravlPrePage(Model model) {
+        System.out.println("/UpravleniePredpriyatiem");
+
+        return "/UpravleniePredpriyatiem";
+    }
+    @GetMapping("/Analitycs")
+    public String AnalyticsPage(Model model) {
+        System.out.println("/Analitycs");
+
+        return "/Analitycs";
+    }
+
+    @GetMapping("/sales")
+    public String salesPage(Model model) {
+        System.out.println("/sales");
+
+        return "/sales";
+    }
+    @GetMapping("/products")
+    public String productsPage(Model model) {
+        System.out.println("/products");
+
+        return "/products";
+    }
+    @GetMapping("/warehouses")
+    public String warehousesPage(Model model) {
+        System.out.println("/warehouses");
+
+        return "/warehouses";
+    }
+    @GetMapping("/eployees")
+    public String eployeesPage(Model model) {
+        System.out.println("/eployees");
+
+        return "/eployees";
+    }
+
+    @GetMapping("/stores")
+    public String storesPage(Model model) {
+        System.out.println("/stores");
+
+        return "/stores";
+    }
+
 }

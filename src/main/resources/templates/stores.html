@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+
+  <style>
+        #select {
+            justify-content: center;
+            margin-right: auto;
+            margin-left: auto;
+            background-color: #f2f2f2;
+            color: #333;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 300px;
+<!--            text-align: center;-->
+        }
+
+        #stores {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 95%;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            max-height: 300px; /* Установите желаемую высоту таблицы */
+            overflow-y: auto; /* Добавление вертикальной прокрутки */
+        }
+
+        #stores td, #stores th {
+            border: 1px solid #ddd;
+            padding: 8px;
+
+
+        }
+
+        #stores tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #stores tr:hover {
+            background-color: #ddd;
+        }
+
+        #stores th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+
+
+        position: sticky;
+        top: 0;
+        z-index: 1;
+
+        }
+
+    </style>
+  <header th:insert="blocks/header :: header"></header>
+</head>
+
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-12 text-center mt-1">
+      <h2>Торговые объекты организации</h2>
+    </div>
+  </div>
+  <!--    table of stores-->
+
+  <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var rows = document.querySelectorAll('#stores tbody tr');
+        var nameStoreField = document.querySelector('#storeName');
+        var adressStoreField = document.querySelector('#storeAdress');
+        var spaceStoreField = document.querySelector('#storeSpace');
+
+        rows.forEach(function(row) {
+            row.addEventListener('click', function() {
+                var storeName = this.querySelector('td:nth-child(1)').textContent;
+                var storeAdress = this.querySelector('td:nth-child(2)').textContent;
+                var storeSpace = this.querySelector('td:nth-child(3)').textContent;
+
+                nameStoreField.value = storeName;
+                adressStoreField.value = storeAdress;
+                spaceStoreField.value = storeSpace;
+            });
+        });
+    });
+</script>
+  <script>
+    function clearFields() {
+        document.getElementById('storeName').value = '';
+        document.getElementById('storeAdress').value = '';
+        document.getElementById('storeSpace').value = '';
+    }
+</script>
+
+
+  <div class="row justify-content-center mt-4">
+    <div class="col-10">
+      <div style="height: 400px; overflow-y: auto;">
+        <table class="table" id="stores">
+          <thead>
+          <tr>
+            <th>Название торгового объекта</th>
+            <th>Адрес</th>
+            <th>Торговая площадь</th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="store : ${stores}">
+            <td th:text="${store.storeName}"></td>
+            <td th:text="${store.storeAdress}"></td>
+            <td th:text="${store.storeSpace}"></td>
+
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <!--    addding new sklad area-->
+  <div class="row justify-content-center mt-4">
+    <div class="col-6">
+      <div class="container">
+        <h3>Добавление нового объекта</h3>
+        <form action="/UpravlenPre/StoreSettings" method="POST" class="row g-4">
+          <div class="col-md-4">
+            <input type="text"  id="storeName" name="storeName" placeholder="Название объекта" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="storeAdress" name="storeAdress" placeholder="Адрес объекта" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="storeSpace" name="storeSpace" placeholder="Площадь объекта" class="form-control" required>
+          </div>
+
+          <div class="col-12 d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary" name="action" value="add">Добавить/Редактировать объект</button>
+            <button type="button" class="btn btn-primary mx-2" id="clearTextButton" onclick="clearFields()">Очистить поля ввода</button>
+            <button type="submit" class="btn btn-danger" id="deleteMarkedButton" name="action" value="remove">Удалить отмеченный объект</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</body>
+
+<footer th:insert="blocks/footer :: footer"></footer>
+
+</html>

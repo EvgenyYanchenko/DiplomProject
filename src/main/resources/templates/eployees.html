@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Страница с вкладками</title>
+  <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <header th:insert="blocks/header :: header"></header>
+  <style>
+        #select {
+            justify-content: center;
+            margin-right: auto;
+            margin-left: auto;
+            background-color: #f2f2f2;
+            color: #333;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 300px;
+<!--            text-align: center;-->
+        }
+
+        #positionsTable {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 95%;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            max-height: 150px; /* Установите желаемую высоту таблицы */
+            overflow-y: auto; /* Добавление вертикальной прокрутки */
+        }
+
+        #positionsTable td, #sklady th {
+            border: 1px solid #ddd;
+            padding: 8px;
+
+
+        }
+
+        #positionsTable tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #positionsTable tr:hover {
+            background-color: #ddd;
+        }
+
+        #positionsTable th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+
+
+        position: sticky;
+        top: 0;
+        z-index: 1;
+
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Сотрудники и должности в организации</h1>
+
+  <ul class="nav nav-tabs" id="myTabs">
+
+    <li class="nav-item">
+      <a class="nav-link active" id="employees-edit-tab" data-bs-toggle="tab" href="#employees">Добавление нового сотрудника</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="positions-tab" data-bs-toggle="tab" href="#positions">Должности</a>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="myTabsContent">
+
+
+    <!--           Вкладка Добавление сотрудников-->
+    <div class="tab-pane fade show active" id="employees">
+      <h3>Добавление нового сотрудника или редактирование</h3>
+      <form id="employee-form" action="/UpravlenPre/Sotrudniki&PositionsADD" method="POST" class="row g-4">
+
+        <div class="mb-3 col-md-4">
+          <label for="lastNAme" class="form-label">Фамилия</label>
+          <input type="text" id="lastNAme" name="lastNAme" class="form-control" placeholder="Введите фамилию" th:value="${sendE.lastNAme}" required>
+
+
+        </div>
+        <div class="mb-3 col-md-4">
+          <label for="firstName" class="form-label">Имя</label>
+          <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Введите имя" th:value="${sendE.firstName}" required>
+        </div>
+        <div class="mb-3 col-md-4">
+          <label for="sourName"  class="form-label">Отчество</label>
+          <input type="text" id="sourName" name="sourName" class="form-control" placeholder="Введите отчество" th:value="${sendE.sourName}" required>
+        </div>
+
+        <div class="mt-1 col-md-4">
+          <label for="adressEmployee" class="form-label">Адрес</label>
+          <input type="text" id="adressEmployee" name="adressEmployee" class="form-control" placeholder="Введите адрес" th:value="${sendE.adressEmployee}" required>
+        </div>
+        <div class="mt-1 col-md-2">
+          <label for="dateOfBirth"  class="form-label " >Дата рождения</label>
+          <input type="date" id="dateOfBirth" name="dateOfBirth"  class="form-control" th:value="${sendE.dateOfBirth}" required>
+        </div>
+        <div class="mt-1 col-md-2">
+          <label for="phoneEmployee" class="form-label">Телефон</label>
+          <input type="tel" id="phoneEmployee" name="phoneEmployee" class="form-control" placeholder="Введите телефон" th:value="${sendE.phoneEmployee}" required>
+        </div>
+
+
+        <div class="mt-1 col-md-3">
+          <label for="position-select" class="form-label">Должность</label>
+          <select class="form-select" id="position-select">
+            <option value="">Выберите должность</option>
+            <option th:each="position : ${dolgnosti}" th:value="${position.nazvanie_Dolgnosti}" th:text="${position.nazvanie_Dolgnosti}" ></option>
+<!--            th:selected="${sendE.positonEmployee}" выбор должности работника-->
+
+          </select>
+        </div>
+
+        <!--          Buttons-->
+
+                <div class="mb-3 col-14">
+                    <button type="submit" class="btn btn-primary" >Добавить нового сотрудника</button>
+<!--                  name="action" value="add"-->
+                    <button type="button" class="btn btn-secondary" id="clear-button">Очистить поля ввода</button>
+                  <button type="submit" class="btn btn-danger" id="deleteMarkedButton" name="action" value="remove" style="margin-left: 10px;">Удалить выбранную запись</button>
+                </div>
+
+
+      </form>
+    </div>
+
+
+    <!--    Вкладка должности-->
+    <div class="tab-pane fade" id="positions">
+
+
+      <script th:inline="javascript">
+$(document).ready(function() {
+    $(".data-form").submit(function(event) {
+        var formId = $(this).attr("id"); // Получаем идентификатор формы
+
+<!--        // Если форма 1-->
+<!--        if (formId === "employee-form") {-->
+<!--            // Обработка для формы 1-->
+<!--            // ...-->
+<!--        }-->
+
+        // Если форма 2
+        if (formId === "dolgnosti-form") {
+            document.addEventListener('DOMContentLoaded', function() {
+        var rows = document.querySelectorAll('#positionsTable tbody tr');
+        var namePositionField = document.querySelector('#namePosition');
+        var salaryPositionField = document.querySelector('#salaryPosition');
+        var categoryPositionField = document.querySelector('#kategoryPosition');
+
+        rows.forEach(function(row) {
+            row.addEventListener('click', function() {
+                var namePosition = this.querySelector('td:nth-child(1)').textContent;
+                var salaryPosition = this.querySelector('td:nth-child(2)').textContent;
+                var categoryPosition = this.querySelector('td:nth-child(3)').textContent;
+
+                namePositionField.value = namePosition;
+                salaryPositionField.value = salaryPosition;
+                categoryPositionField.value = categoryPosition;
+            });
+        });
+    });
+        }
+    });
+});
+</script>
+      <script th:inline="javascript">
+
+
+                </script>
+
+      <script>
+    function clearFields() {
+        document.getElementById('namePosition').value = '';
+        document.getElementById('salaryPosition').value = '';
+        document.getElementById('categoryPosition').value = '';
+    }
+
+             </script>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center mt-0">
+            <h1>Должности в организации</h1>
+          </div>
+        </div>
+        <!--    table of ALL positions at company-->
+
+        <div class="row justify-content-center mt-4">
+          <div class="col-10">
+            <div style="height: 250px; overflow-y: auto;">
+              <table class="table" id="positionsTable">
+                <thead>
+                <tr>
+                  <th>Название должности</th>
+                  <th>Оклад</th>
+                  <th>Категория</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="position : ${positions}">
+                  <td th:text="${position.namePosition}"></td>
+                  <td th:text="${position.salaryPosition}"></td>
+                  <td th:text="${position.categoryPosition}"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <!--    addding new Position area-->
+
+
+        <div class="row justify-content-center mt-4">
+          <div class="col-6">
+            <div class="container">
+              <h3>Добавление новой должности</h3>
+              <form id="dolgnosti-form" action="/UpravlenPre/Sotrudniki&PositionsADD" method="POST" class="row g-4">
+<!--          <form id="employee-form" action="/UpravlenPre/Sotrudniki&PositionsADD" method="POST" class="row g-4">-->
+<!--          <form id="form1" class="data-form" action="/processForm1" method="POST">-->
+                <div class="col-md-4">
+                  <input type="text" id="namePosition" name="namePosition" placeholder="Название должности"
+                         class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" id="salaryPosition" name="salaryPosition" placeholder="Оклад"
+                         class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" id="categoryPosition" name="categoryPosition" placeholder="Категория"
+                         class="form-control" required>
+                </div>
+
+                <div class="col-12 d-flex justify-content-center">
+                  <button type="submit" class="btn btn-primary" name="action" value="add">
+                    Добавить/Редактировать новую должность
+                  </button>
+                  <button type="button" class="btn btn-primary mx-2" id="clearTextButton"
+                          onclick="clearFields()">Очистить поля ввода
+                  </button>
+                  <button type="submit" class="btn btn-danger" id="deleteMarkedButton" name="action"
+                          value="remove">Удалить отмеченную должность
+                  </button>
+                </div>
+
+
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+  </div>
+
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+<footer th:insert="blocks/footer :: footer"></footer>
+</html>
