@@ -12,7 +12,7 @@ public class MainController {
     @GetMapping("/")
     public String loginPage(Model model) {
         System.out.println("Helo world new project");
-        System.out.println("привет как дела?7/10");
+
         return "/login";
     }
 
@@ -24,14 +24,14 @@ public class MainController {
 //    @GetMapping("/new_mainMenu")
 //    public String mainMenuPage(Model model) {
 //        System.out.println("Helo world new project");
-//        System.out.println("привет как дела?7/10");
+//
 //        return "new_mainMenu";
 //    }
 
     @GetMapping("/mainMenu")
     public String mainMenuPage(Model model) {
-        System.out.println("Helo world new project");
-        System.out.println("привет как дела?7/10");
+        System.out.println("/mainMenu");
+
         return "/mainMenu";
     }
 
