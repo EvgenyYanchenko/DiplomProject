@@ -68,6 +68,24 @@
       <h2>Все Продажи</h2>
     </div>
   </div>
+
+  <!-- Checkboxes for filtering -->
+  <div class="row justify-content-center mt-1">
+    <div class="col-10 text-center">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="todayCheckbox">
+        <label class="form-check-label font-weight-bold" for="todayCheckbox" style="font-size: 20px;">Сегодня</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="weekCheckbox">
+        <label class="form-check-label font-weight-bold" for="weekCheckbox" style="font-size: 20px;">Неделя</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="monthCheckbox">
+        <label class="form-check-label font-weight-bold" for="monthCheckbox" style="font-size: 20px;">Месяц</label>
+      </div>
+    </div>
+  </div>
   <!--    table of stores-->
 
   <script th:inline="javascript">
@@ -113,22 +131,101 @@
             <th>Количество</th>
             <th>Стоимость ед.</th>
             <th>Общая сумма</th>
-            <th></th>>
+            <th></th>
 
 
           </tr>
           </thead>
             <tbody>
-              <tr th:each="element : ${prodazhy_tovarov}">
-                <td th:text="${element.ID_operacii}"></td>
-                <td th:text="${#dates.format(element.data, 'yyyy-MM-dd')}"></td>
-                <td th:text="${element.ID_prodavca}"></td>
-                <td th:text="${element.Torgov_objekt}"></td>
-                <td th:text="${element.ID_Tovara}"></td>
-                <td th:text="${element.Kolichestvo}"></td>
-                <td th:text="${element.Stoimost_edinicy}"></td>
-    <!--            <td th:text="${TOTAL}"></td>-->
-              </tr>
+            <tr>
+              <td>1</td>
+              <td>2022-01-01</td>
+              <td>Продавец 1</td>
+              <td>Торговый объект 1</td>
+              <td>Товар 1</td>
+              <td>10</td>
+              <td>10</td>
+              <td>100</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>2022-01-02</td>
+              <td>Продавец 2</td>
+              <td>Торговый объект 2</td>
+              <td>Товар 2</td>
+              <td>5</td>
+              <td>20</td>
+              <td>100</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>2022-01-03</td>
+              <td>Продавец 3</td>
+              <td>Торговый объект 3</td>
+              <td>Товар 3</td>
+              <td>3</td>
+              <td>15</td>
+              <td>45</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>2022-01-04</td>
+              <td>Продавец 4</td>
+              <td>Торговый объект 4</td>
+              <td>Товар 4</td>
+              <td>7</td>
+              <td>8</td>
+              <td>56</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>2022-01-05</td>
+              <td>Продавец 5</td>
+              <td>Торговый объект 5</td>
+              <td>Товар 5</td>
+              <td>2</td>
+              <td>12</td>
+              <td>24</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>2022-01-06</td>
+              <td>Продавец 6</td>
+              <td>Торговый объект 6</td>
+              <td>Товар 6</td>
+              <td>9</td>
+              <td>9</td>
+              <td>81</td>
+              <td></td>
+            </tr>
+            <!-- Continue adding rows until 29 -->
+            <tr>
+              <td>7</td>
+              <td>2022-01-07</td>
+              <td>Продавец 7</td>
+              <td>Торговый объект 7</td>
+              <td>Товар 7</td>
+              <td>4</td>
+              <td>18</td>
+              <td>72</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>2022-01-08</td>
+              <td>Продавец 8</td>
+              <td>Торговый объект 8</td>
+              <td>Товар 8</td>
+              <td>6</td>
+              <td>14</td>
+              <td>84</td>
+              <td></td>
+            </tr>
             </tbody>
         </table>
       </div>
